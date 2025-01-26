@@ -1,7 +1,6 @@
 package weather
 
 import (
-	"encoding/json"
 	"fmt"
 	"time"
 
@@ -17,12 +16,6 @@ type WeatherInfo struct {
 	City        string  `json:"city"`
 }
 
-type WeatherResult struct {
-	Temperature  float64 `json:"temperature"`
-	Conditions   string  `json:"conditions"`
-	AICommentary string  `json:"aiCommentary"`
-}
-
 func WeatherWorkflow(ctx workflow.Context, city string) (*WeatherResult, error) {
 	options := workflow.ActivityOptions{
 		StartToCloseTimeout: time.Second * 10,
@@ -32,15 +25,10 @@ func WeatherWorkflow(ctx workflow.Context, city string) (*WeatherResult, error) 
 	}
 	ctx = workflow.WithActivityOptions(ctx, options)
 
-	var weatherData string
-	err := workflow.ExecuteActivity(ctx, GetWeatherActivity, city).Get(ctx, &weatherData)
-	if err != nil {
-		return nil, err
-	}
-
-	// Parse the weather data
+	// Get weather result directly as WeatherResult
 	var result WeatherResult
-	if err := json.Unmarshal([]byte(weatherData), &result); err != nil {
+	err := workflow.ExecuteActivity(ctx, GetWeatherActivity, city).Get(ctx, &result)
+	if err != nil {
 		return nil, err
 	}
 

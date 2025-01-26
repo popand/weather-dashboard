@@ -33,14 +33,21 @@ type weatherResponse struct {
 	Name string `json:"name"`
 }
 
-func GetWeatherActivity(ctx context.Context, city string) (string, error) {
+type WeatherResult struct {
+	Temperature  float64 `json:"temperature"`
+	Conditions   string  `json:"conditions"`
+	City         string  `json:"city"`
+	AICommentary string  `json:"aiCommentary"`
+}
+
+func GetWeatherActivity(ctx context.Context, city string) (*WeatherResult, error) {
 	// Read config
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
 	viper.AddConfigPath("config")
 
 	if err := viper.ReadInConfig(); err != nil {
-		return "", fmt.Errorf("failed to read config: %w", err)
+		return nil, fmt.Errorf("failed to read config: %w", err)
 	}
 
 	apiKey := viper.GetString("weather.api_key")
@@ -50,22 +57,22 @@ func GetWeatherActivity(ctx context.Context, city string) (string, error) {
 
 	resp, err := http.Get(url)
 	if err != nil {
-		return "", fmt.Errorf("failed to fetch weather data: %w", err)
+		return nil, fmt.Errorf("failed to fetch weather data: %w", err)
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return "", fmt.Errorf("weather API returned status code: %d", resp.StatusCode)
+		return nil, fmt.Errorf("weather API returned status code: %d", resp.StatusCode)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return "", fmt.Errorf("failed to read response body: %w", err)
+		return nil, fmt.Errorf("failed to read response body: %w", err)
 	}
 
 	var weather weatherResponse
 	if err := json.Unmarshal(body, &weather); err != nil {
-		return "", fmt.Errorf("failed to parse weather data: %w", err)
+		return nil, fmt.Errorf("failed to parse weather data: %w", err)
 	}
 
 	// Get the weather conditions
@@ -74,20 +81,12 @@ func GetWeatherActivity(ctx context.Context, city string) (string, error) {
 		conditions = weather.Weather[0].Main
 	}
 
-	result := struct {
-		Temperature float64 `json:"temperature"`
-		Conditions  string  `json:"conditions"`
-		City        string  `json:"city"`
-	}{
+	// Replace the anonymous struct with WeatherResult
+	result := &WeatherResult{
 		Temperature: weather.Main.Temp,
 		Conditions:  conditions,
 		City:        weather.Name,
 	}
 
-	jsonData, err := json.Marshal(result)
-	if err != nil {
-		return "", fmt.Errorf("error marshaling weather data: %w", err)
-	}
-
-	return string(jsonData), nil
+	return result, nil
 }
