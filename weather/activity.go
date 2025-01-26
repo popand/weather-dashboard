@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"net/url"
 
-
+	"github.com/spf13/viper"
+)
 
 var weatherURL = "https://api.openweathermap.org/data/2.5/weather"
 
