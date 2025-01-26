@@ -5,8 +5,8 @@ go 1.21
 require (
 	github.com/sashabaranov/go-openai v1.36.1
 	github.com/spf13/viper v1.19.0
+	github.com/stretchr/testify v1.10.0
 	go.temporal.io/sdk v1.32.1
-	github.com/stretchr/testify v1.8.x
 )
 
 require (

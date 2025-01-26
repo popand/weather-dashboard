@@ -6,11 +6,12 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/spf13/viper"
 	"github.com/stretchr/testify/assert"
 )
 
 func TestGetWeatherActivity(t *testing.T) {
-	// Mock server
+	// Create a mock HTTP server
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Verify query parameters
 		assert.Contains(t, r.URL.String(), "q=London")
@@ -30,13 +31,35 @@ func TestGetWeatherActivity(t *testing.T) {
 	}))
 	defer server.Close()
 
-	// Override the weather URL for testing
+	// Save original URL and restore it after test
 	originalURL := weatherURL
-	weatherURL = server.URL
-	defer func() { weatherURL = originalURL }()
+	weatherURL = server.URL + "/data/2.5/weather"
+	defer func() {
+		weatherURL = originalURL
+	}()
+
+	// Configure Viper for testing - Fix the config path
+	viper.Reset()
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("../config")    // Look in parent directory's config folder
+	viper.AddConfigPath("../../config") // Also look two directories up
+	viper.AddConfigPath("config")       // Also look in current directory
+	viper.AddConfigPath("testdata")     // Add this line after the other AddConfigPath calls
+
+	// Set a default API key in case config file is not found
+	viper.SetDefault("weather.api_key", "test-api-key")
+
+	if err := viper.ReadInConfig(); err != nil {
+		t.Logf("Warning: Could not read config file: %v", err)
+		// Continue with default values
+	}
 
 	// Test the activity
 	result, err := GetWeatherActivity(context.Background(), "London")
+	if err != nil {
+		t.Fatalf("GetWeatherActivity failed: %v", err)
+	}
 
 	// Assertions
 	assert.NoError(t, err)
