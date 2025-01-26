@@ -1,20 +1,32 @@
-# Weather Dashboard
+# Weather Dashboard with AI Commentary
 
-A Go-based weather dashboard that uses Temporal workflows to fetch weather data from OpenWeatherMap API. The application demonstrates the use of Temporal for reliable API interactions and provides a simple web interface for users to check weather conditions.
+A modern weather dashboard application that combines real-time weather data with AI-generated insights. Built with Go and Temporal workflow engine, this project demonstrates a production-ready microservices architecture.
 
-## Features
-
+## Key Features
 - Real-time weather data fetching using OpenWeatherMap API
-- Temporal workflow implementation for reliable API calls
-- Automatic retries on API failures
-- Clean web interface
-- Unit tests for both activities and workflows
+- AI-powered weather commentary using OpenAI's GPT-3.5
+- Durable workflow execution with Temporal
+- Clean, responsive web interface
+- Fault-tolerant design with graceful degradation
 
-## Prerequisites
+## Getting Started
 
-- Go 1.21 or later
-- Temporal server (using remote instance at viaduct.proxy.rlwy.net:46280)
-- OpenWeatherMap API key (provided in the code)
+### Prerequisites
+- Go 1.x
+- Temporal server running locally or accessible endpoint
+- OpenWeatherMap API key
+- OpenAI API key
+
+### Configuration
+Create a `config/config.yaml` file with your API keys:
+
+```
+weather:
+  api_key: "your-openweathermap-api-key"
+
+openai:
+  api_key: "your-openai-api-key"
+```
 
 ## Project Structure 
 
@@ -107,3 +119,26 @@ The application includes comprehensive error handling:
 ## License
 
 MIT License - feel free to use this code for your own projects. 
+
+The test suite includes:
+- Unit tests for weather activity
+- Unit tests for AI commentary generation
+- Integration tests for workflows
+- Mock servers for external API dependencies
+
+## Technical Stack
+- Backend: Go
+- Workflow Engine: Temporal
+- APIs: OpenWeatherMap, OpenAI
+- Frontend: HTML/CSS with vanilla JavaScript
+- Configuration: Viper
+
+## Acknowledgments
+- OpenWeatherMap for weather data
+- OpenAI for AI capabilities
+- Temporal for workflow engine
+- The Go community for excellent tools and libraries 
+
+## Testing
+
+Run the test suite: 
