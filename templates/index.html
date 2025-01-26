@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weather Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .weather-card {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .ai-message {
+            background-color: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Weather Dashboard</h1>
+    <div class="weather-card">
+        <h2>Current Weather</h2>
+        <p>Temperature: {{.Temperature}}°C</p>
+        <p>Conditions: {{.Conditions}}</p>
+        {{if .AICommentary}}
+        <div class="ai-message">
+            <p>{{.AICommentary}}</p>
+        </div>
+        {{end}}
+    </div>
+</body>
+</html> 
