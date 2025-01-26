@@ -31,16 +31,24 @@ openai:
 ## Project Structure 
 
 ```
-weather-dashboard/
-├── main.go              # Web server and main application
-├── worker/
-│   └── main.go         # Temporal worker implementation
+├── config/
+│   ├── config.yaml              # Configuration file (not in version control)
+│   └── config.example.yaml      # Example configuration
+├── templates/
+│   └── index.html               # Web interface template
 ├── weather/
-│   ├── activity.go     # Weather API activity
-│   ├── workflow.go     # Temporal workflow definition
-│   ├── activity_test.go # Activity tests
-│   └── workflow_test.go # Workflow tests
-└── README.md
+│   ├── activity.go              # Weather API integration
+│   ├── activity_test.go         # Weather activity tests
+│   ├── ai_agent.go              # OpenAI integration
+│   ├── ai_agent_test.go         # AI agent tests
+│   ├── workflow.go              # Temporal workflow definition
+│   └── workflow_test.go         # Workflow tests
+├── worker/
+│   └── main.go                  # Temporal worker implementation
+├── main.go                      # Web server and main application entry
+├── go.mod                       # Go module definition
+├── go.sum                       # Go module checksums
+└── README.md                    # Project documentation
 ```
 
 ## Installation
