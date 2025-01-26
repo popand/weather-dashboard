@@ -10,6 +10,11 @@ import (
 	"go.temporal.io/sdk/client"
 )
 
+// WeatherPageData holds the data to be displayed in the weather dashboard template
+type WeatherPageData struct {
+	Weather *weather.WeatherResult
+}
+
 var weatherTemplate = `
 <!DOCTYPE html>
 <html>
@@ -61,6 +66,10 @@ var weatherTemplate = `
 </body>
 </html>
 `
+
+// weatherTemplate contains the HTML template for the weather dashboard.
+// It includes styling and layout for displaying current weather conditions
+// and AI-generated commentary in a responsive format.
 
 func main() {
 	c, err := client.Dial(client.Options{
