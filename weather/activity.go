@@ -7,13 +7,14 @@ import (
 	"io/ioutil"
 	"net/http"
 	"net/url"
-)
 
-const (
-	apiKey = "7d093c781cf770466969c1fb3c9fc39b"
-)
+
 
 var weatherURL = "https://api.openweathermap.org/data/2.5/weather"
+
+type Config struct {
+	APIKey string
+}
 
 type weatherResponse struct {
 	Main struct {
@@ -32,6 +33,17 @@ type weatherResponse struct {
 }
 
 func GetWeatherActivity(ctx context.Context, city string) (string, error) {
+	// Read config
+	viper.SetConfigName("config")
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("config")
+
+	if err := viper.ReadInConfig(); err != nil {
+		return "", fmt.Errorf("failed to read config: %w", err)
+	}
+
+	apiKey := viper.GetString("weather.api_key")
+
 	escapedCity := url.QueryEscape(city)
 	url := fmt.Sprintf("%s?q=%s&appid=%s&units=metric", weatherURL, escapedCity, apiKey)
 
@@ -64,9 +76,11 @@ func GetWeatherActivity(ctx context.Context, city string) (string, error) {
 	result := struct {
 		Temperature float64 `json:"temperature"`
 		Conditions  string  `json:"conditions"`
+		City        string  `json:"city"`
 	}{
 		Temperature: weather.Main.Temp,
 		Conditions:  conditions,
+		City:        weather.Name,
 	}
 
 	jsonData, err := json.Marshal(result)
