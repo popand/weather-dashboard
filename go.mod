@@ -6,6 +6,7 @@ require (
 	github.com/sashabaranov/go-openai v1.36.1
 	github.com/spf13/viper v1.19.0
 	go.temporal.io/sdk v1.32.1
+	github.com/stretchr/testify v1.8.x
 )
 
 require (
@@ -32,7 +33,6 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/stretchr/objx v0.5.2 // indirect
-	github.com/stretchr/testify v1.10.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	go.temporal.io/api v1.43.0 // indirect
 	go.uber.org/atomic v1.9.0 // indirect
