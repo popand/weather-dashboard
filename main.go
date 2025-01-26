@@ -47,8 +47,10 @@ var weatherTemplate = `
     {{if .Weather}}
     <div class="weather-card">
         <h2>Current Weather</h2>
+		<p>Conditions: {{.Weather.City}}</p>
         <p>Temperature: {{.Weather.Temperature}}°C</p>
         <p>Conditions: {{.Weather.Conditions}}</p>
+		
         {{if .Weather.AICommentary}}
         <div class="ai-message">
             <p>{{.Weather.AICommentary}}</p>

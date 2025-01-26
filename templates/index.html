@@ -28,13 +28,24 @@
     <h1>Weather Dashboard</h1>
     <div class="weather-card">
         <h2>Current Weather</h2>
-        <p>Temperature: {{.Temperature}}°C</p>
-        <p>Conditions: {{.Conditions}}</p>
+        <div class="weather-info">
+            <h2>Weather in {{if .City}}{{.City}}{{else}}<span id="city">Loading...</span>{{end}}</h2>
+            <p>Temperature: {{if .Temperature}}{{.Temperature}}{{else}}<span id="temperature">Loading...</span>{{end}}°C</p>
+            <p>Conditions: {{if .Conditions}}{{.Conditions}}{{else}}<span id="conditions">Loading...</span>{{end}}</p>
+        </div>
         {{if .AICommentary}}
         <div class="ai-message">
             <p>{{.AICommentary}}</p>
         </div>
         {{end}}
     </div>
+
+    <script>
+        function updateWeatherInfo(weatherData) {
+            document.getElementById('temperature').textContent = weatherData.temperature;
+            document.getElementById('conditions').textContent = weatherData.conditions;
+            document.getElementById('city').textContent = weatherData.city;
+        }
+    </script>
 </body>
 </html> 
