@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/sashabaranov/go-openai"
+	"github.com/spf13/viper"
 )
 
 const aiPrompt = `You are a friendly weather assistant. Given this weather forecast: "%s", 
@@ -12,7 +13,8 @@ provide a brief, friendly message that includes both the forecast information an
 or observation about the weather. Keep the response concise and engaging.`
 
 func GetAICommentaryActivity(ctx context.Context, forecast string) (string, error) {
-	client := openai.NewClient("sk-svcacct-9oS4j4096NFiMt3cRmWj_07LNPQcAmEHkhaYA0ePLGLN-IUwFrb2ajNBhCzd57P_RfvT3BlbkFJAPddv_8EnZGSkIman0CYcLxaFXctZ88PFuJdqAKliuwj9LwQUISRKlq5P33yrT0F8lgA")
+	apiKey := viper.GetString("openai.api_key")
+	client := openai.NewClient(apiKey)
 
 	resp, err := client.CreateChatCompletion(
 		ctx,
