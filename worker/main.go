@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"path/filepath"
 	"weather-dashboard/weather"
 
 	"github.com/spf13/viper"
@@ -13,7 +14,7 @@ func main() {
 	// Initialize viper
 	viper.SetConfigName("config")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("config")
+	viper.AddConfigPath(filepath.Join("..", "config"))
 
 	if err := viper.ReadInConfig(); err != nil {
 		log.Fatalln("Error reading config:", err)
